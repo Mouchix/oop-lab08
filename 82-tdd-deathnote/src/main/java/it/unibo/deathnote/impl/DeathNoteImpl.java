@@ -8,6 +8,9 @@ import it.unibo.deathnote.api.DeathNote;
 
 public class DeathNoteImpl implements DeathNote {
 
+    private final int TIME_FOR_CAUSE_OF_DEATH = 40;
+    private final int TIME_FOR_DETAILS_OF_DEATH = 6040;
+
     final List<DeathPerson> list = new LinkedList<>();
     long time;
 
@@ -37,7 +40,7 @@ public class DeathNoteImpl implements DeathNote {
         }
 
 
-        if((TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - time)) < 40){
+        if((TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - time)) < TIME_FOR_CAUSE_OF_DEATH){
             list.getLast().setCauseOfDeath(cause);
             return true;
         }
@@ -51,7 +54,7 @@ public class DeathNoteImpl implements DeathNote {
             throw new IllegalStateException();
         }
 
-        if((TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - time)) < 6040){
+        if((TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - time)) < TIME_FOR_DETAILS_OF_DEATH){
             list.getLast().setDetailsOfDeath(details);
             return true;
         }

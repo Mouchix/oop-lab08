@@ -18,6 +18,15 @@ class TestDeathNote {
     
     private DeathNote deathNote;
 
+    private final String DEFAULT_DEATH_CAUSE = "Heart attack";
+    private final String KARTING_DEATH_CAUSE = "Karting accident";
+    private final String FIRST_PEOPLE = "Cile";
+    private final String SECOND_PEOPLE = "Mouchi";
+    private final String FIRST_DETAILS = "Run for too long";
+    private final String SECOND_DETAILS = "Too much sleep";
+    private final String EMPTY_STRING = "";
+
+
     @BeforeEach
     public void setUp(){
         this.deathNote = new DeathNoteImpl();
@@ -40,31 +49,31 @@ class TestDeathNote {
     void testNoRuleEmpty(){
         for(int i = 1; i < DeathNote.RULES.size(); i++){
             assertNotNull(deathNote.getRule(i));
-            assertNotEquals("", deathNote.getRule(i));
+            assertNotEquals(EMPTY_STRING, deathNote.getRule(i));
         }
     }
 
     @Test
     void testDeath(){
-        assertFalse(deathNote.isNameWritten("Cile"));
-        deathNote.writeName("Cile");
-        assertTrue(deathNote.isNameWritten("Cile"));
-        assertFalse(deathNote.isNameWritten("Mouchi"));
-        assertFalse(deathNote.isNameWritten(""));
+        assertFalse(deathNote.isNameWritten(FIRST_PEOPLE));
+        deathNote.writeName(FIRST_PEOPLE);
+        assertTrue(deathNote.isNameWritten(FIRST_PEOPLE));
+        assertFalse(deathNote.isNameWritten(SECOND_PEOPLE));
+        assertFalse(deathNote.isNameWritten(EMPTY_STRING));
     }
 
     @Test
     void testCauseOfDeath() throws InterruptedException{
         try {
-            deathNote.writeDeathCause("HearthAttack");
-            deathNote.writeName("Cile");
-            assertFalse(deathNote.getDeathCause("Cile") == "Hearth Attack");
-            deathNote.writeName("Mouchi");
-            deathNote.writeDeathCause("karting accident");
-            assertTrue(deathNote.getDeathCause("Mouchi") == "karting accident");
+            deathNote.writeDeathCause(DEFAULT_DEATH_CAUSE);
+            deathNote.writeName(FIRST_PEOPLE);
+            assertFalse(deathNote.getDeathCause(FIRST_PEOPLE) == DEFAULT_DEATH_CAUSE);
+            deathNote.writeName(SECOND_PEOPLE);
+            deathNote.writeDeathCause(KARTING_DEATH_CAUSE);
+            assertTrue(deathNote.getDeathCause(SECOND_PEOPLE) == KARTING_DEATH_CAUSE);
             sleep(100);
-            deathNote.writeDeathCause("Hearth Attack");
-            assertFalse(deathNote.getDeathCause("Mouchi") == "Hearth Attack");
+            deathNote.writeDeathCause(DEFAULT_DEATH_CAUSE);
+            assertFalse(deathNote.getDeathCause(SECOND_PEOPLE) == DEFAULT_DEATH_CAUSE);
         } catch (IllegalStateException e) {
             
         }
@@ -74,19 +83,17 @@ class TestDeathNote {
     @Test
     void testDeatilsOfDeath() throws InterruptedException{
         try {
-            deathNote.writeDetails("HearthAttack");
-            deathNote.writeName("Cile");
-            assertTrue(deathNote.getDeathDetails("Cile") == "");
-            deathNote.writeDetails("run for too long");
-            assertTrue(deathNote.getDeathDetails("Cile") == "run for too long");
-            deathNote.writeName("Mouchi");
+            deathNote.writeDetails(FIRST_DETAILS);
+            deathNote.writeName(FIRST_PEOPLE);
+            assertTrue(deathNote.getDeathDetails(FIRST_PEOPLE) == EMPTY_STRING);
+            deathNote.writeDetails(FIRST_DETAILS);
+            assertTrue(deathNote.getDeathDetails(FIRST_PEOPLE) == FIRST_DETAILS);
+            deathNote.writeName(SECOND_PEOPLE);
             sleep(6100);
-            deathNote.writeDetails("Too much sleep");
-            assertFalse(deathNote.getDeathDetails("Mouchi") == "Too much sleep");
+            deathNote.writeDetails(SECOND_DETAILS);
+            assertFalse(deathNote.getDeathDetails(SECOND_PEOPLE) == SECOND_DETAILS);
         } catch (IllegalStateException e) {
             
-        }
-        
-        
+        }   
     }
 }
