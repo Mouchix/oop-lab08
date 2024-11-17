@@ -38,7 +38,15 @@ public final class LaunchApp {
         SecurityException {
         final var model = new DrawNumberImpl();
         final DrawNumberController app = new DrawNumberControllerImpl(model);
-        for(final String typeOfView: List.of("Stdout", "Swing")){
+
+        for(final var classs: List.of("Stdout", "Swing")){
+            final var view = Class.forName("it.unibo.mvc.view.DrawNumber" + classs + "View");
+            for ( int i = 0; i < 3; i++) {
+                app.addView((DrawNumberView)view.getConstructor().newInstance());
+            }
+        }
+
+        /*for(final String typeOfView: List.of("Stdout", "Swing")){
             final var classs = Class.forName("it.unibo.mvc.view.DrawNumber" + typeOfView + "View");
             for(int i = 0; i < 3; i++) {
                 final var newView = classs.getConstructor().newInstance();
@@ -48,6 +56,6 @@ public final class LaunchApp {
                     throw new IllegalArgumentException(newView.getClass() + "is not a valid class");
                 }
             }
-        }
+        }*/
     }
 }
